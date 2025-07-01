@@ -1,0 +1,21 @@
+{
+  "name": "code",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "python3 -m http.server 3000 2>/dev/null || python -m http.server 3000 2>/dev/null || npx serve -l 3000 .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://x-access-token:ghu_fqqyDHYseAzxUhrZdzMSqpiCagrSiy2m4907@github.com/pranav-jain-1/new.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pranav-jain-1/new/issues"
+  },
+  "homepage": "https://github.com/pranav-jain-1/new#readme"
+}
