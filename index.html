@@ -3,49 +3,349 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Development Server</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        max-width: 800px;
-        margin: 50px auto;
-        padding: 20px;
-        background-color: #f5f5f5;
-      }
-      .container {
-        background: white;
-        padding: 30px;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      }
-      h1 {
-        color: #333;
-        margin-bottom: 20px;
-      }
-      .status {
-        background: #d4edda;
-        color: #155724;
-        padding: 15px;
-        border-radius: 4px;
-        border: 1px solid #c3e6cb;
-        margin: 20px 0;
-      }
-    </style>
+    <title>EcoTracker - Carbon Footprint Monitor</title>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="container">
-      <h1>🚀 Development Server Running</h1>
-      <div class="status">
-        ✅ Server is now operational and ready for development!
+    <div id="app">
+      <!-- Navigation -->
+      <nav class="navbar" id="navbar" style="display: none">
+        <div class="nav-container">
+          <div class="nav-brand">🌱 EcoTracker</div>
+          <ul class="nav-menu">
+            <li>
+              <a href="#" onclick="showPage('dashboard')" class="nav-link"
+                >Dashboard</a
+              >
+            </li>
+            <li>
+              <a href="#" onclick="showPage('data-entry')" class="nav-link"
+                >Add Data</a
+              >
+            </li>
+            <li>
+              <a href="#" onclick="showPage('gamification')" class="nav-link"
+                >Achievements</a
+              >
+            </li>
+            <li>
+              <a href="#" onclick="logout()" class="nav-link logout">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <!-- Login Page -->
+      <div id="login-page" class="page active">
+        <div class="auth-container">
+          <div class="auth-card">
+            <h1>Welcome to EcoTracker</h1>
+            <p class="subtitle">
+              Monitor your carbon footprint and make a difference
+            </p>
+
+            <form id="login-form" class="auth-form">
+              <div class="form-group">
+                <label for="login-email">Email</label>
+                <input type="email" id="login-email" required />
+              </div>
+              <div class="form-group">
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" required />
+              </div>
+              <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+
+            <p class="auth-switch">
+              Don't have an account?
+              <a href="#" onclick="showPage('register')">Sign up here</a>
+            </p>
+          </div>
+        </div>
       </div>
-      <p>
-        Your application has been successfully set up and is running on port
-        3000.
-      </p>
-      <p>
-        You can now start building your application by modifying the files in
-        this directory.
-      </p>
+
+      <!-- Register Page -->
+      <div id="register-page" class="page">
+        <div class="auth-container">
+          <div class="auth-card">
+            <h1>Join EcoTracker</h1>
+            <p class="subtitle">Start your journey to a greener lifestyle</p>
+
+            <form id="register-form" class="auth-form">
+              <div class="form-group">
+                <label for="register-name">Full Name</label>
+                <input type="text" id="register-name" required />
+              </div>
+              <div class="form-group">
+                <label for="register-email">Email</label>
+                <input type="email" id="register-email" required />
+              </div>
+              <div class="form-group">
+                <label for="register-password">Password</label>
+                <input type="password" id="register-password" required />
+              </div>
+              <button type="submit" class="btn btn-primary">
+                Create Account
+              </button>
+            </form>
+
+            <p class="auth-switch">
+              Already have an account?
+              <a href="#" onclick="showPage('login')">Login here</a>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dashboard Page -->
+      <div id="dashboard-page" class="page">
+        <div class="dashboard-container">
+          <h1>Your Carbon Footprint Dashboard</h1>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon">🚗</div>
+              <div class="stat-content">
+                <h3>Travel</h3>
+                <p class="stat-value" id="travel-emissions">0</p>
+                <p class="stat-unit">kg CO₂/month</p>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon">⚡</div>
+              <div class="stat-content">
+                <h3>Electricity</h3>
+                <p class="stat-value" id="electricity-emissions">0</p>
+                <p class="stat-unit">kg CO₂/month</p>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon">🗑️</div>
+              <div class="stat-content">
+                <h3>Waste</h3>
+                <p class="stat-value" id="waste-emissions">0</p>
+                <p class="stat-unit">kg CO₂/month</p>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon">🍽️</div>
+              <div class="stat-content">
+                <h3>Food</h3>
+                <p class="stat-value" id="food-emissions">0</p>
+                <p class="stat-unit">kg CO₂/month</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard-summary">
+            <div class="total-emissions">
+              <h2>Total Monthly Emissions</h2>
+              <p class="total-value" id="total-emissions">0 kg CO₂</p>
+              <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+              </div>
+              <p class="progress-text">Target: &lt; 500 kg CO₂/month</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Data Entry Page -->
+      <div id="data-entry-page" class="page">
+        <div class="data-entry-container">
+          <h1>Add Your Carbon Data</h1>
+
+          <div class="data-forms">
+            <div class="form-card">
+              <h3>🚗 Travel</h3>
+              <form id="travel-form" class="data-form">
+                <div class="form-group">
+                  <label for="car-miles">Car Miles (per month)</label>
+                  <input type="number" id="car-miles" min="0" step="0.1" />
+                </div>
+                <div class="form-group">
+                  <label for="flights">Flights (per month)</label>
+                  <input type="number" id="flights" min="0" />
+                </div>
+                <div class="form-group">
+                  <label for="public-transport"
+                    >Public Transport Hours (per month)</label
+                  >
+                  <input
+                    type="number"
+                    id="public-transport"
+                    min="0"
+                    step="0.1"
+                  />
+                </div>
+                <button type="submit" class="btn btn-secondary">
+                  Update Travel
+                </button>
+              </form>
+            </div>
+
+            <div class="form-card">
+              <h3>⚡ Electricity</h3>
+              <form id="electricity-form" class="data-form">
+                <div class="form-group">
+                  <label for="kwh-usage">Monthly kWh Usage</label>
+                  <input type="number" id="kwh-usage" min="0" step="0.1" />
+                </div>
+                <div class="form-group">
+                  <label for="energy-source">Primary Energy Source</label>
+                  <select id="energy-source">
+                    <option value="grid">Grid Average</option>
+                    <option value="renewable">Renewable</option>
+                    <option value="coal">Coal</option>
+                    <option value="natural-gas">Natural Gas</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-secondary">
+                  Update Electricity
+                </button>
+              </form>
+            </div>
+
+            <div class="form-card">
+              <h3>🗑️ Waste</h3>
+              <form id="waste-form" class="data-form">
+                <div class="form-group">
+                  <label for="waste-kg">Weekly Waste (kg)</label>
+                  <input type="number" id="waste-kg" min="0" step="0.1" />
+                </div>
+                <div class="form-group">
+                  <label for="recycling-rate">Recycling Rate (%)</label>
+                  <input type="number" id="recycling-rate" min="0" max="100" />
+                </div>
+                <button type="submit" class="btn btn-secondary">
+                  Update Waste
+                </button>
+              </form>
+            </div>
+
+            <div class="form-card">
+              <h3>🍽️ Food</h3>
+              <form id="food-form" class="data-form">
+                <div class="form-group">
+                  <label for="meat-meals">Meat Meals (per week)</label>
+                  <input type="number" id="meat-meals" min="0" max="21" />
+                </div>
+                <div class="form-group">
+                  <label for="dairy-servings">Dairy Servings (per week)</label>
+                  <input type="number" id="dairy-servings" min="0" />
+                </div>
+                <div class="form-group">
+                  <label for="local-food">Local Food Percentage (%)</label>
+                  <input type="number" id="local-food" min="0" max="100" />
+                </div>
+                <button type="submit" class="btn btn-secondary">
+                  Update Food
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gamification Page -->
+      <div id="gamification-page" class="page">
+        <div class="gamification-container">
+          <h1>Your Green Achievements</h1>
+
+          <div class="user-level">
+            <h2>Eco Level: <span id="user-level">1</span></h2>
+            <div class="level-progress">
+              <div class="level-fill" id="level-fill"></div>
+            </div>
+            <p>
+              Points: <span id="user-points">0</span> /
+              <span id="next-level-points">100</span>
+            </p>
+          </div>
+
+          <div class="badges-section">
+            <h3>Badges Earned</h3>
+            <div class="badges-grid" id="badges-grid">
+              <div class="badge locked" data-badge="first-entry">
+                <div class="badge-icon">📊</div>
+                <div class="badge-name">First Entry</div>
+                <div class="badge-desc">Add your first carbon data</div>
+              </div>
+
+              <div class="badge locked" data-badge="eco-warrior">
+                <div class="badge-icon">🌱</div>
+                <div class="badge-name">Eco Warrior</div>
+                <div class="badge-desc">
+                  Keep emissions under 400kg for a month
+                </div>
+              </div>
+
+              <div class="badge locked" data-badge="green-transport">
+                <div class="badge-icon">🚲</div>
+                <div class="badge-name">Green Transport</div>
+                <div class="badge-desc">
+                  Use public transport or bike for a week
+                </div>
+              </div>
+
+              <div class="badge locked" data-badge="waste-reducer">
+                <div class="badge-icon">♻️</div>
+                <div class="badge-name">Waste Reducer</div>
+                <div class="badge-desc">Achieve 80% recycling rate</div>
+              </div>
+
+              <div class="badge locked" data-badge="consistent-tracker">
+                <div class="badge-icon">📈</div>
+                <div class="badge-name">Consistent Tracker</div>
+                <div class="badge-desc">Log data for 7 days straight</div>
+              </div>
+
+              <div class="badge locked" data-badge="carbon-crusher">
+                <div class="badge-icon">💪</div>
+                <div class="badge-name">Carbon Crusher</div>
+                <div class="badge-desc">Reduce total emissions by 20%</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="leaderboard-section">
+            <h3>Global Leaderboard</h3>
+            <div class="leaderboard">
+              <div class="leaderboard-item">
+                <span class="rank">1</span>
+                <span class="name">EcoChampion</span>
+                <span class="points">2,450 pts</span>
+                <span class="emissions">285 kg CO₂</span>
+              </div>
+              <div class="leaderboard-item">
+                <span class="rank">2</span>
+                <span class="name">GreenGuru</span>
+                <span class="points">2,280 pts</span>
+                <span class="emissions">298 kg CO₂</span>
+              </div>
+              <div class="leaderboard-item">
+                <span class="rank">3</span>
+                <span class="name">PlanetProtector</span>
+                <span class="points">2,150 pts</span>
+                <span class="emissions">312 kg CO₂</span>
+              </div>
+              <div class="leaderboard-item current-user">
+                <span class="rank">--</span>
+                <span class="name">You</span>
+                <span class="points" id="leaderboard-points">0 pts</span>
+                <span class="emissions" id="leaderboard-emissions"
+                  >-- kg CO₂</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <script src="app.js"></script>
   </body>
 </html>
